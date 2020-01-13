@@ -225,7 +225,7 @@ app.post("/", function(req, res) {
 		}else{
 			res.json(response.statusCode);
 		}
-	})
+	});
 });
 
 app.listen(process.env.PORT || 3000, function() {
