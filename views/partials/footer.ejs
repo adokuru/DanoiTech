@@ -215,11 +215,13 @@
     <!--====== Main js ======-->
     <script src="assets/js/main.js"></script>
     <script type="text/javascript">
-        $('#securelock').hover(
-            function(){ $('#securelocked').removeClass('fa-lock-open-alt') }
-            function(){ $('#securelocked').addClass('fa-lock-alt') },
-           
-        )
+        $(document).ready(function(){
+          $("#securelock").hover(function(){
+            $("#securelocked").removeClass("fa-lock-open-alt");
+            }, function(){
+            $("#securelocked").addClass("fa-lock-alt");
+          });
+        });
     </script>
 
 
