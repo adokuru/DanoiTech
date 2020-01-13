@@ -217,19 +217,9 @@
     <script type="text/javascript">
         $(document).ready(function(){
           $("#securelock").hover(function(){
-            $("#securelocked").removeClass("fa-lock-open-alt");
-            }, function(){
-            $("#securelocked").addClass("fa-lock-alt");
-          });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-          $("#securelock").hover(function(){
-            $("#securelocked").addClass("fa-lock-open-alt");
-            }, function(){
-            $("#securelocked").removeClass("fa-lock-alt");
-          });
+            $("#securelocked").toggleClass("fa-lock-alt",true);
+            $("#securelocked").toggleClass("fa-lock-open-alt",false);
+            });
         });
     </script>
 
