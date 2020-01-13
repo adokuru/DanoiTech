@@ -213,6 +213,20 @@ app.post("/login", function(req, res) {
 		}
 	});
 });
+app.post("/", function(req, res) {
+	let email = req.body.EmailName;
+	let options = {
+		url = "https://us20.api.mailchimp.com/3.0/lists/" + process.env.MCLIST,
+		method: "POST",
+	}
+	request(options, function(error, response, body){
+		if (error) {
+			console.log(error);
+		}else{
+			res.json(response.statusCode);
+		}
+	})
+});
 
 app.listen(process.env.PORT || 3000, function() {
 	console.log("Server started on port 3000 or " + process.env.PORT);
