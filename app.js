@@ -1,6 +1,7 @@
 //jshint esversion:6
 require("dotenv").config();
 const express = require("express");
+const request = require("request");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
@@ -105,7 +106,7 @@ app.get("/", function(req, res) {
 			res.send(err);
 			//res.render("home", { posts: posts, images: img });
 		} else {
-			res.render("home", { posts: posts, images: img });
+			res.render("home", { posts: posts, images: img, isadded: false });
 		}
 	});
 });
@@ -213,17 +214,37 @@ app.post("/login", function(req, res) {
 		}
 	});
 });
-app.post("/", function(req, res) {
+app.post("/subscribed", function(req, res) {
 	let email = req.body.EmailName;
+
+	let data = {
+		members: [
+			{
+				email_address: email,
+				status: "subscribed"
+			}
+		]
+	};
+	let jsonData = JSON.stringify(data);
 	let options = {
-		url = "https://us20.api.mailchimp.com/3.0/lists/" + process.env.MCLIST,
+		url: process.env.MCLIST,
 		method: "POST",
-	}
-	request(options, function(error, response, body){
+		headers: {
+			Authorization: "danoitech " + process.env.MCAPI
+		},
+		body: jsonData
+	};
+	request(options, function(error, response, body) {
+		console.log(options);
 		if (error) {
 			console.log(error);
-		}else{
-			res.json(response.statusCode);
+		} else {
+			if (response.statusCode === 200) {
+				console.log(response.statusCode);
+				res.render("subscribed");
+			} else {
+				res.send("<a>Home</a>");
+			}
 		}
 	});
 });
