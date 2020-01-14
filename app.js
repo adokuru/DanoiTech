@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const request = require("request");
 const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -98,6 +99,16 @@ const img = [
 	{ img: "blog-6.jpg" },
 	{ img: "blog-7.jpg" }
 ];
+
+let transporter = nodemailer.createTransport({
+	host: "smtpout.secureserver.net",
+	port: 465,
+	secure: true,
+	auth: {
+		user: process.env.email,
+		pass: process.env.password
+	}
+});
 
 app.get("/", function(req, res) {
 	let medium = "https://medium.com/feed/@njaustevedomino";
@@ -215,12 +226,12 @@ app.post("/login", function(req, res) {
 	});
 });
 app.post("/subscribed", function(req, res) {
-	let email = req.body.EmailName;
+	let nsemail = req.body.EmailName;
 
 	let data = {
 		members: [
 			{
-				email_address: email,
+				email_address: nsemail,
 				status: "subscribed"
 			}
 		]
@@ -245,6 +256,30 @@ app.post("/subscribed", function(req, res) {
 			} else {
 				res.send("<a>Home</a>");
 			}
+		}
+	});
+});
+
+app.post("/quote", function(req, res) {
+	let fromemail = req.body.femail;
+
+	let fromname = req.body.fname;
+
+	let subject = req.body.subject;
+
+	let bodymail = req.body.message;
+
+	let mailOptions = {
+		from: fromemail,
+		to: "info@danoitech.com",
+		subject: subject,
+		text: fromname + "              " + bodymail
+	};
+	transporter.sendMail(mailOptions, function(err, data) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.render("quote");
 		}
 	});
 });
