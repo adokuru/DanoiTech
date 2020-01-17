@@ -1,5 +1,6 @@
 //jshint esversion:6
 require("dotenv").config();
+const compression = require("compression");
 const express = require("express");
 const request = require("request");
 const bodyParser = require("body-parser");
@@ -14,8 +15,8 @@ const findOrCreate = require("mongoose-findorcreate");
 const feed = require("feed-read");
 
 const app = express();
-
-app.use(express.static("public"));
+app.use(compression());
+app.use(express.static("public"));8
 app.set("view engine", "ejs");
 app.use(
 	bodyParser.urlencoded({
