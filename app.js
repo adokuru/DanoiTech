@@ -16,7 +16,7 @@ const feed = require("feed-read");
 
 const app = express();
 app.use(compression());
-app.use(express.static("public"));8
+app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(
 	bodyParser.urlencoded({
