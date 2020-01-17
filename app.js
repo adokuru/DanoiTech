@@ -110,6 +110,16 @@ let transporter = nodemailer.createTransport({
 		pass: process.env.password
 	}
 });
+app.get("/*", function(req, res, next) {
+	if (req.url.indexOf("/assets/") === 0) {
+		res.setHeader("Cache-Control", "public, max-age=2592000");
+		res.setHeader(
+			"Expires",
+			new Date(Date.now() + 2592000000).toUTCString()
+		);
+	}
+	next();
+});
 
 app.get("/", function(req, res) {
 	let medium = "https://medium.com/feed/@njaustevedomino";
