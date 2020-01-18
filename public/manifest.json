@@ -1,6 +1,6 @@
 {
 	"name": "DanoiTech",
-	"Short_name": "DanoiTech",
+	"short_name": "DanoiTech",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#b21117",
