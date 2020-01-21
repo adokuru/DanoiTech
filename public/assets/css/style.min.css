@@ -3,7 +3,7 @@
 .label-container{
 	position:fixed;
 	bottom:48px;
-	right:105px;
+	left:105px;
 	display:table;
 	visibility: hidden;
 }
