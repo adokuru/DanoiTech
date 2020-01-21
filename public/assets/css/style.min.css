@@ -42,6 +42,37 @@ body{
 	z-index:1000;
 	animation: bot-to-top 2s ease-out;
 }
+
+.a89{
+	position:fixed;
+	right:40px;
+	padding-bottom:20px;
+	bottom:80px;
+	z-index:100;
+}
+
+.b89{
+	list-style:none;
+	margin-bottom:10px;
+}
+
+.c89{
+	background-color:#F33;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+	width:60px;
+	height:60px;
+	display:block;
+}
+
+.c89:hover{
+	visibility:visible!important;
+	opacity:1!important;
+}
+
+
 .my-float{
 	font-size:24px;
 	margin-top:18px;
