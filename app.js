@@ -13,6 +13,7 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 const feed = require("feed-read");
+const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
 
 const app = express();
 app.use(compression());
@@ -51,6 +52,7 @@ mongoose
 	.catch(err => {
 		console.log(err);
 	});
+app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
 const userSchema = new mongoose.Schema({
 	email: String,
 	password: String,
@@ -110,6 +112,9 @@ let transporter = nodemailer.createTransport({
 		pass: process.env.password
 	}
 });
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
 app.get("/*", function(req, res, next) {
 	if (req.url.indexOf("/assets/") === 0) {
 		res.setHeader("Cache-Control", "public, max-age=2592000");
@@ -122,7 +127,7 @@ app.get("/*", function(req, res, next) {
 });
 
 app.get("/", function(req, res) {
-	let medium = "https://medium.com/feed/@njaustevedomino";
+	let medium = "https://medium.com/feed/@danoitech";
 	feed(medium, function(err, posts) {
 		if (err) {
 			res.send(err);
@@ -147,6 +152,12 @@ app.get(
 	}
 );
 
+app.get("/about", function(req, res) {
+	res.render("about");
+});
+app.get("/about", function(req, res) {
+	res.render("about");
+});
 app.get("/about", function(req, res) {
 	res.render("about");
 });
@@ -294,6 +305,7 @@ app.post("/quote", function(req, res) {
 		}
 	});
 });
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(process.env.PORT || 3000, function() {
 	console.log("Server started on port 3000 or " + process.env.PORT);

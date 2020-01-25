@@ -91,7 +91,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer-logo text-center pb-45">
-                        <a href="/"><img src="assets/images/logo.png" alt="logo"></a>
+                        <a href="/"><img src="assets/images/footer-logo.png" alt="footer-logo"></a>
                     </div>
                 </div>
             </div>
@@ -222,6 +222,7 @@
     <!--====== wow js ======-->
     <script src="assets/js/wow.min.js"></script>
 
+
     <!--====== Magnific Popup js ======-->
     <script src="assets/js/jquery.magnific-popup.min.js"></script>
  
@@ -242,15 +243,30 @@
             $("#securelocked").toggleClass("fa-lock-open-alt",false);
             });
         });
-    </script>
-     <script type="text/javascript">
         $(document).ready(function(){
           $("#ssss").hover(function(){
             $("#securelocked").toggleClass("fa-lock-alt",false);
             $("#securelocked").toggleClass("fa-lock-open-alt",true);
             });
         });
+        window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "theme": "classic",
+  "content": {
+    "href": "http://www.danoitech.com/privacy"
+  }
+});
     </script>
+
 
 </body>
 
