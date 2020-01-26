@@ -155,11 +155,14 @@ app.get(
 app.get("/about", function(req, res) {
 	res.render("about");
 });
-app.get("/about", function(req, res) {
-	res.render("about");
+app.get("/contact", function(req, res) {
+	res.render("contact");
 });
-app.get("/about", function(req, res) {
-	res.render("about");
+app.get("/offline", function(req, res) {
+	res.render("offline");
+});
+app.get("/services", function(req, res) {
+	res.render("services");
 });
 app.get("/login", function(req, res) {
 	res.render("login");
@@ -213,6 +216,7 @@ app.get("/logout", function(req, res) {
 	req.logout();
 	res.redirect("/");
 });
+
 app.get("/medium", function(req, res) {});
 
 app.post("/register", function(req, res) {
