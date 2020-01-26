@@ -2,16 +2,17 @@
 const staticCacheName = "DanoiCache";
 
 const cacheitems = [
+	"/",
 	"js/main.js",
-	"assets/js/bootstrap.min.js",
+	"assets/images/logo.png",
 	"assets/css/all.min.css",
+	"assets/css/slick.min.css",
 	"assets/css/styles.min.css",
+	"assets/js/bootstrap.min.js",
 	"assets/css/default.min.css",
 	"assets/css/animate.min.css",
-	"assets/css/slick.min.css",
-	"assets/css/bootstrap.min.min.css.min.css",
 	"assets/images/danoitech/favicon.ico",
-	"assets/images/logo.png"
+	"assets/css/bootstrap.min.min.css.min.css"
 ];
 
 // install event
@@ -32,5 +33,9 @@ self.addEventListener("activate", evt => {
 });
 
 self.addEventListener("fetch", evt => {
-	//console.log("service worker activated", evt);
+	evt.respondWith(
+		caches.match(evt.request).then(cacheRes => {
+			return cacheRes || fetch(evt.request);
+		})
+	);
 });
