@@ -3,16 +3,16 @@ const staticCacheName = "DanoiCache";
 
 const cacheitems = [
 	"/",
-	"js/main.js",
-	"assets/images/logo.png",
-	"assets/css/all.min.css",
-	"assets/css/slick.min.css",
-	"assets/css/styles.min.css",
-	"assets/js/bootstrap.min.js",
-	"assets/css/default.min.css",
-	"assets/css/animate.min.css",
-	"assets/images/danoitech/favicon.ico",
-	"assets/css/bootstrap.min.min.css.min.css"
+	"/assets/js/main.js",
+	"/assets/js/bootstrap.min.js",
+	"/assets/images/danoitech/favicon.ico",
+	"/assets/images/logo.png",
+	"/assets/css/all.min.css",
+	"/assets/css/slick.min.css",
+	"/assets/css/styles.min.css",
+	"/assets/css/default.min.css",
+	"/assets/css/animate.min.css",
+	"/assets/css/bootstrap.min.min.css"
 ];
 
 // install event
