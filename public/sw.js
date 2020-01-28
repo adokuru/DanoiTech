@@ -1,6 +1,6 @@
 // cache
-const staticCacheName = "DanoitechCache";
-const dynamicCache = "DanoiTech=dynamic";
+const staticCacheName = "DanoitechCached";
+const dynamicCache = "DanoiTech=dynamiced";
 
 const cacheitems = [
 	"/",
