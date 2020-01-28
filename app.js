@@ -130,39 +130,39 @@ app.get("/", function(req, res) {
 	let medium = "https://medium.com/feed/@danoitech";
 	feed(medium, function(err, posts) {
 		if (err) {
-			res.send(err);
+			res.render("home", { title: "Home", posts: 0, isadded: false });
 			//res.render("home", { posts: posts, images: img });
 		} else {
-			res.render("home", { posts: posts, images: img, isadded: false });
+			res.render("home", {
+				title: "Home",
+				posts: posts,
+				images: img,
+				isadded: false
+			});
 		}
 	});
 });
 
-app.get(
-	"/auth/google",
-	passport.authenticate("google", { scope: ["profile"] })
-);
-
-app.get(
-	"/auth/google/secrets",
-	passport.authenticate("google", { failureRedirect: "/login" }),
-	function(req, res) {
-		// Successful authentication, redirect to secrets.
-		res.redirect("/secrets");
-	}
-);
-
 app.get("/about", function(req, res) {
-	res.render("about");
+	res.render("about", { title: "About Us" });
 });
 app.get("/contact", function(req, res) {
-	res.render("contact");
+	res.render("contact", { title: "Contact Us" });
 });
 app.get("/offline", function(req, res) {
 	res.render("offline");
 });
 app.get("/services", function(req, res) {
-	res.render("services");
+	res.render("services", { title: "Services" });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+app.get("/submit", function(req, res) {
+	if (req.isAuthenticated()) {
+		res.render("submit");
+	} else {
+		res.redirect("/login");
+	}
 });
 app.get("/login", function(req, res) {
 	res.render("login");
@@ -170,26 +170,6 @@ app.get("/login", function(req, res) {
 
 app.get("/register", function(req, res) {
 	res.render("register");
-});
-
-app.get("/secrets", function(req, res) {
-	User.find({ secret: { $ne: null } }, function(err, foundUsers) {
-		if (err) {
-			console.log(err);
-		} else {
-			if (foundUsers) {
-				res.render("secrets", { usersWithSecrets: foundUsers });
-			}
-		}
-	});
-});
-
-app.get("/submit", function(req, res) {
-	if (req.isAuthenticated()) {
-		res.render("submit");
-	} else {
-		res.redirect("/login");
-	}
 });
 
 app.post("/submit", function(req, res) {
@@ -216,9 +196,6 @@ app.get("/logout", function(req, res) {
 	req.logout();
 	res.redirect("/");
 });
-
-app.get("/medium", function(req, res) {});
-
 app.post("/register", function(req, res) {
 	User.register({ username: req.body.username }, req.body.password, function(
 		err,
@@ -309,6 +286,19 @@ app.post("/quote", function(req, res) {
 		}
 	});
 });
+app.get(
+	"/auth/google",
+	passport.authenticate("google", { scope: ["profile"] })
+);
+
+app.get(
+	"/auth/google/secrets",
+	passport.authenticate("google", { failureRedirect: "/login" }),
+	function(req, res) {
+		// Successful authentication, redirect to secrets.
+		res.redirect("/secrets");
+	}
+);
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(process.env.PORT || 3000, function() {
