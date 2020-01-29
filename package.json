@@ -4,7 +4,6 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "npm workbox injectManifest workbox-config.js",
     "test": "nodemon app.js"
   },
   "keywords": [
