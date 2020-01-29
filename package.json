@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "build": "npm workbox injectManifest workbox-config.js",
     "test": "nodemon app.js"
   },
   "keywords": [
@@ -35,5 +36,8 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
     "sweetalert": "^2.1.2"
+  },
+  "devDependencies": {
+    "workbox-build": "^5.0.0"
   }
 }

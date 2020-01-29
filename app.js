@@ -143,14 +143,39 @@ app.get("/", function(req, res) {
 	});
 });
 
+app.get("/index.html", function(req, res) {
+	let medium = "https://medium.com/feed/@danoitech";
+	feed(medium, function(err, posts) {
+		if (err) {
+			res.render("home", { title: "Home", posts: 0, isadded: false });
+			//res.render("home", { posts: posts, images: img });
+		} else {
+			res.render("home", {
+				title: "Home",
+				posts: posts,
+				images: img,
+				isadded: false
+			});
+		}
+	});
+});
 app.get("/about", function(req, res) {
 	res.render("about", { title: "About Us" });
 });
 app.get("/contact", function(req, res) {
 	res.render("contact", { title: "Contact Us" });
 });
+app.get("/offline.html", function(req, res) {
+	res.render("offline");
+});
 app.get("/offline", function(req, res) {
 	res.render("offline");
+});
+app.get("/404", function(req, res) {
+	res.render("404");
+});
+app.get("/404.html", function(req, res) {
+	res.render("404");
 });
 app.get("/services", function(req, res) {
 	res.render("services", { title: "Services" });

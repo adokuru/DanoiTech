@@ -1,5 +1,5 @@
  <!--====== BLOG PART START ======-->
-<% if (posts > 0) { %>
+
                      
     <section class="blog-area">
         <div class="container">
@@ -18,16 +18,12 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-8">
                     <div class="blog-item mt-30 wow fadeIn animated" data-wow-duration="1500ms" data-wow-delay="0ms">
-                       
-                         
-                         
                         <div class="blog-content">
                             <h3 class="title"><a href="<%=post.link%>"><%=post.title%></a></h3>
                             <ul>
                                 <li><i class="fal fa-user"></i> DanoiTech</li>
                                 <li><i class="fal fa-calendar-alt"></i><%=post.published%></li>
                             </ul>
-                        
                             <a href="<%=post.link%>">View Details <i class="fal fa-long-arrow-right"></i></a>
                         </div>
                     </div>
@@ -38,5 +34,5 @@
               
         </div>
     </section>
- <% } %>
+
     <!--====== BLOG PART ENDS ======-->
