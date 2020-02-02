@@ -353,7 +353,7 @@
                 <div class="col-lg-5">
                     <div class="quote-content">
                         <h3 class="title">Get A Quote <br> <span>Free <span>Consultations</span></span></h3>
-                        <form action="/quote" method="POST">
+                        <form onsubmit="return subquotemain(this);" method="POST">
                             <div class="input-box mt-25">
                                 <label for="#">Full Name Here</label>
                                 <input type="text" name="fname" placeholder="Ayodeji Haruna Chigozie">
@@ -378,6 +378,20 @@
                                 <button type="submit" class="main-btn">Send Mesage</button>
                             </div>
                         </form>
+                        <script type="text/javascript">
+                            function subquotemain(form) {
+                                $.ajax({
+                                    url: "/quote",
+                                    method:"POST",
+                                    data: {femail: form.femail.value,fname: form.fname.value,subject: form.subject.value,message: form.message.value },
+                                     success: function(response){
+                                        swal(response);
+                                     }
+                                })
+                                return false;
+                            }
+                           
+                        </script>
                     </div>
                 </div>
                 
@@ -390,5 +404,6 @@
    
 
 <%- include('partials/blogsection') %>   
+
 <%- include('partials/footer') %>
 

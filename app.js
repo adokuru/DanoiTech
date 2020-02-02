@@ -8,9 +8,6 @@ const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const passport = require("passport");
-const passportLocalMongoose = require("passport-local-mongoose");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 const feed = require("feed-read");
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
@@ -30,17 +27,6 @@ app.use(
 		type: "application/vnd.api+json"
 	})
 );
-
-app.use(
-	session({
-		secret: "Our little secret.",
-		resave: false,
-		saveUninitialized: false
-	})
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
 mongoose
 	.connect(process.env.DB, {
 		useUnifiedTopology: true,
@@ -53,55 +39,6 @@ mongoose
 		console.log(err);
 	});
 app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
-const userSchema = new mongoose.Schema({
-	email: String,
-	password: String,
-	googleId: String,
-	secret: String
-});
-
-userSchema.plugin(passportLocalMongoose);
-userSchema.plugin(findOrCreate);
-
-const User = new mongoose.model("User", userSchema);
-
-passport.use(User.createStrategy());
-
-passport.serializeUser(function(user, done) {
-	done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-	User.findById(id, function(err, user) {
-		done(err, user);
-	});
-});
-
-passport.use(
-	new GoogleStrategy(
-		{
-			clientID: process.env.CLIENT_ID,
-			clientSecret: process.env.CLIENT_SECRET,
-			callbackURL: "/auth/google/secrets",
-			userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-		},
-		function(accessToken, refreshToken, profile, cb) {
-			console.log(profile);
-
-			User.findOrCreate({ googleId: profile.id }, function(err, user) {
-				return cb(err, user);
-			});
-		}
-	)
-);
-const img = [
-	{ img: "blog-1.jpg" },
-	{ img: "blog-2.jpg" },
-	{ img: "blog-3.jpg" },
-	{ img: "blog-4.jpg" },
-	{ img: "blog-6.jpg" },
-	{ img: "blog-7.jpg" }
-];
 
 let transporter = nodemailer.createTransport({
 	host: "smtpout.secureserver.net",
@@ -131,12 +68,10 @@ app.get("/", function(req, res) {
 	feed(medium, function(err, posts) {
 		if (err) {
 			res.render("home", { title: "Home", posts: 0, isadded: false });
-			//res.render("home", { posts: posts, images: img });
 		} else {
 			res.render("home", {
 				title: "Home",
 				posts: posts,
-				images: img,
 				isadded: false
 			});
 		}
@@ -148,12 +83,10 @@ app.get("/index.html", function(req, res) {
 	feed(medium, function(err, posts) {
 		if (err) {
 			res.render("home", { title: "Home", posts: 0, isadded: false });
-			//res.render("home", { posts: posts, images: img });
 		} else {
 			res.render("home", {
 				title: "Home",
 				posts: posts,
-				images: img,
 				isadded: false
 			});
 		}
@@ -180,79 +113,6 @@ app.get("/404.html", function(req, res) {
 app.get("/services", function(req, res) {
 	res.render("services", { title: "Services" });
 });
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-app.get("/submit", function(req, res) {
-	if (req.isAuthenticated()) {
-		res.render("submit");
-	} else {
-		res.redirect("/login");
-	}
-});
-app.get("/login", function(req, res) {
-	res.render("login");
-});
-
-app.get("/register", function(req, res) {
-	res.render("register");
-});
-
-app.post("/submit", function(req, res) {
-	const submittedSecret = req.body.secret;
-
-	//Once the user is authenticated and their session gets saved, their user details are saved to req.user.
-	// console.log(req.user.id);
-
-	User.findById(req.user.id, function(err, foundUser) {
-		if (err) {
-			console.log(err);
-		} else {
-			if (foundUser) {
-				foundUser.secret = submittedSecret;
-				foundUser.save(function() {
-					res.redirect("/secrets");
-				});
-			}
-		}
-	});
-});
-
-app.get("/logout", function(req, res) {
-	req.logout();
-	res.redirect("/");
-});
-app.post("/register", function(req, res) {
-	User.register({ username: req.body.username }, req.body.password, function(
-		err,
-		user
-	) {
-		if (err) {
-			console.log(err);
-			res.redirect("/register");
-		} else {
-			passport.authenticate("local")(req, res, function() {
-				res.redirect("/secrets");
-			});
-		}
-	});
-});
-
-app.post("/login", function(req, res) {
-	const user = new User({
-		username: req.body.username,
-		password: req.body.password
-	});
-
-	req.login(user, function(err) {
-		if (err) {
-			console.log(err);
-		} else {
-			passport.authenticate("local")(req, res, function() {
-				res.redirect("/secrets");
-			});
-		}
-	});
-});
 app.post("/subscribed", function(req, res) {
 	let nsemail = req.body.EmailName;
 
@@ -277,12 +137,13 @@ app.post("/subscribed", function(req, res) {
 		console.log(options);
 		if (error) {
 			console.log(error);
+			res.send("error occured try again later");
 		} else {
 			if (response.statusCode === 200) {
 				console.log(response.statusCode);
-				res.render("subscribed");
+				res.send("Email subscribed");
 			} else {
-				res.send("<a>Home</a>");
+				res.send("Not subscribed try again later");
 			}
 		}
 	});
@@ -306,24 +167,13 @@ app.post("/quote", function(req, res) {
 	transporter.sendMail(mailOptions, function(err, data) {
 		if (err) {
 			console.log(err);
+			res.send("Quote Failed try again later");
 		} else {
-			res.render("quote");
+			res.send("Quote Sent successfully");
 		}
 	});
 });
-app.get(
-	"/auth/google",
-	passport.authenticate("google", { scope: ["profile"] })
-);
 
-app.get(
-	"/auth/google/secrets",
-	passport.authenticate("google", { failureRedirect: "/login" }),
-	function(req, res) {
-		// Successful authentication, redirect to secrets.
-		res.redirect("/secrets");
-	}
-);
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(process.env.PORT || 3000, function() {
