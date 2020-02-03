@@ -162,7 +162,7 @@ app.post("/quote", function(req, res) {
 		from: fromemail,
 		to: "info@danoitech.com",
 		subject: subject,
-		text: fromname + "              " + bodymail
+		text: fromname + "<br>" + bodymail
 	};
 	transporter.sendMail(mailOptions, function(err, data) {
 		if (err) {
